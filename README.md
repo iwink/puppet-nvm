@@ -1,25 +1,53 @@
-# Puppet NVM
+# [DEPRECATED] Puppet NVM
 
-[![Build Status](https://travis-ci.org/artberri/puppet-nvm.svg?branch=master)](https://travis-ci.org/artberri/puppet-nvm)
+> 📌 **Deprecation Notice**
+>
+> This repository is deprecated and no more work will be done on this by [Alberto Varela](https://github.com/artberri). The usage of this plugin is discouraged and any future issues will not be fixed by its current author.
+>
+> I've [offered the plugin to the Voxpupuli community](https://groups.io/g/voxpupuli/message/484), but it seems they are not interested in adopting it. If you are interested in maintaining this plugin, don't hesitate to contact me.
+>
+> If you don't want to take over as a maintainer, but you still want to get feature/bugfix X into production open-source is all about forking, so go right ahead.
 
 A puppet module to install (multiple versions of) Node.js with NVM (Node Version Manager).
 
 #### Table of Contents
 
-1. [Module Description - What the module does and why it is useful](#module-description)
-2. [Setup - The basics of getting started with nvm](#setup)
-    * [What nvm affects](#what-nvm-affects)
-    * [Beginning with nvm](#beginning-with-nvm)
-3. [Usage - Configuration options and additional functionality](#usage)
-    * [Installing an specific version of Node.js](#installing-an-specific-version-of-nodejs)
-    * [Installing multiple versions of Node.js](#installing-multiple-versions-of-nodejs)
-    * [Installing Node.js globally](#installing-nodejs-globally)
-    * [Installing Node.js global npm packages](#installing-nodejs-global-npm-packages)
-4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-    * [Class: nvm](#class-nvm)
-    * [Define: nvm::node::install](#define-nvmnodeinstall)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
+- [Puppet NVM](#puppet-nvm) - [Table of Contents](#table-of-contents)
+  - [Module Description](#module-description)
+  - [Setup](#setup)
+    - [What nvm affects](#what-nvm-affects)
+    - [Beginning with NVM](#beginning-with-nvm)
+  - [Usage](#usage)
+    - [Installing an specific version of Node.js](#installing-an-specific-version-of-nodejs)
+    - [Installing multiple versions of Node.js](#installing-multiple-versions-of-nodejs)
+    - [Installing Node.js globally](#installing-nodejs-globally)
+    - [Installing Node.js global npm packages](#installing-nodejs-global-npm-packages)
+  - [Reference](#reference)
+    - [Class: `nvm`](#class-nvm)
+      - [`user`](#user)
+      - [`home`](#home)
+      - [`nvm_dir`](#nvm_dir)
+      - [`profile_path`](#profile_path)
+      - [`version`](#version)
+      - [`manage_user`](#manage_user)
+      - [`manage_dependencies`](#manage_dependencies)
+      - [`manage_profile`](#manage_profile)
+      - [`nvm_repo`](#nvm_repo)
+      - [`refetch`](#refetch)
+      - [`install_node`](#install_node)
+      - [`node_instances`](#node_instances)
+    - [Define: `nvm::node::install`](#define-nvmnodeinstall)
+      - [`user`](#user-1)
+      - [`nvm_dir`](#nvm_dir-1)
+      - [`version`](#version-1)
+      - [`set_default` _\[Since version 1.1.0\]_](#set_default-since-version-110)
+      - [`default` _\[Deprecated since version 1.1.0 use `set_default` instead\]_](#default-deprecated-since-version-110-use-set_default-instead)
+      - [`from_source`](#from_source)
+  - [Limitations](#limitations)
+  - [Development](#development)
+    - [Contributing](#contributing)
+    - [Running tests](#running-tests)
+      - [Testing quickstart](#testing-quickstart)
 
 ## Module Description
 
@@ -29,7 +57,7 @@ Node Version Manager (NVM) is a little bash script that allows you to manage mul
 
 ### What nvm affects
 
-* **Profile configuration:** By default this module will write in the user's `.bashrc` file, this behaviour can be modified with the `profile_path` or `manage_profile` parameters as is explained bellow.
+- **Profile configuration:** By default this module will write in the user's `.bashrc` file, this behaviour can be modified with the `profile_path` or `manage_profile` parameters as is explained bellow.
 
 **Warning:** If your are going to manage Node.js with NVM is highly recommended to uninstall any native Node.js installation.
 
@@ -154,7 +182,7 @@ When this class is declared with the default options, Puppet:
 
 You can simply declare the default `nvm` class:
 
-``` puppet
+```puppet
 class { 'nvm':
   user => 'foo',
 }
@@ -256,11 +284,11 @@ Node.js version. Could be set to any NVM Node.js version name.
 
 Default: `0.12.7`.
 
-#### `set_default` *[Since version 1.1.0]*
+#### `set_default` _[Since version 1.1.0]_
 
 Determines whether to set this Node.js version as default.
 
-#### `default` *[Deprecated since version 1.1.0 use `set_default` instead]*
+#### `default` _[Deprecated since version 1.1.0 use `set_default` instead]_
 
 This parameter is now deprecated because [is a reserved word](https://docs.puppetlabs.com/puppet/latest/reference/lang_reserved.html#reserved-words), use `set_default` instead. Backguard compatibilty is added but throws a warning message.
 
@@ -312,6 +340,3 @@ bundle install
 bundle exec rake test
 ./spec/run_virtualbox_tests.sh # this will take a long time
 ```
-
-
-
