@@ -43,6 +43,18 @@ A puppet module to install (multiple versions of) Node.js with NVM (Node Version
       - [`set_default` _\[Since version 1.1.0\]_](#set_default-since-version-110)
       - [`default` _\[Deprecated since version 1.1.0 use `set_default` instead\]_](#default-deprecated-since-version-110-use-set_default-instead)
       - [`from_source`](#from_source)
+    - [Define: `nvm::npm`](#define-nvmnpm)
+      - [`nvm_dir`](#nvm_dir-2)
+      - [`nodejs_version`](#nodejs_version)
+      - [`target`](#target)
+      - [`ensure`](#ensure)
+      - [`cmd_exe_path`](#cmd_exe_path)
+      - [`install_options`]($install_options)
+      - [`package`](#package)
+      - [`source`](#source)
+      - [`uninstall_options`](#uninstall_options)
+      - [`user`](#user-2)
+      - [`use_package_json`](#use_package_json)
   - [Limitations](#limitations)
   - [Development](#development)
     - [Contributing](#contributing)
@@ -301,6 +313,72 @@ Default: `false`.
 Determines whether to install Node.js from sources.
 
 Default: `false`.
+
+### Define: `nvm::npm`
+
+Uses npm to manage packages using a specific nodejs version
+
+**Parameters within `nvm::node::install`**
+
+#### `nvm_dir`
+
+The installation directory of `nvm`
+
+#### `nodejs_version`
+
+Version of Node.js to use. This needs to be installed
+
+#### `target`
+
+When managing a specific installation or project, run commands from this directory
+This option is mutually exclusive with the `--global` install flag
+
+Default: `undef`
+
+#### `ensure`
+
+Whether the package should be installed or removed. Use `present`,`absent` or a valid version/tag.
+
+Default: `present`
+
+#### `cmd_exe_path`
+
+Used on windows installations to override the `cmd.exe` location
+
+Default: see the `puppet_nodejs` module
+
+#### `install_options`
+
+Array of install options to be passed to npm
+
+Default: []
+
+#### `package` 
+
+The package name you want to install/uninstall
+
+#### `source`
+
+Used in the building of the `package_string`. 
+
+Default: `registry`
+
+#### `uninstall_options`
+
+Array of options to be used when uninstalling packages
+
+Default: []
+
+#### `user`
+
+Sets the user running the `npm` commands
+
+#### `use_package_json`
+
+If set, this will read the `package.json` file at the current `target`, and install dependencies based on that file
+
+Default: `false`
+
 
 ## Limitations
 
