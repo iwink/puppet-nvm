@@ -1,22 +1,22 @@
-# File pulled from the nodejs module. 
+# File pulled from the nodejs module.~
 # See README.md for usage information.
 define nvm::npm (
   Stdlib::Absolutepath            $nvm_dir,
-  Pattern[/^\d+.\d+.\d+/]          $nodejs_version,
-  Stdlib::Absolutepath            $target             = undef,
+  Pattern[/^\d+.\d+.\d+/]         $nodejs_version,
+  Optional[Stdlib::Absolutepath]  $target             = undef,
   Pattern[/^[^<            >= ]/] $ensure             = 'present',
-  Stdlib::Absolutepath            $cmd_exe_path       = $nodejs::cmd_exe_path,
+  Optional[Stdlib::Absolutepath]  $cmd_exe_path       = $nodejs::cmd_exe_path,
   Array                           $install_options    = [],
   String                          $package            = $title,
   String                          $source             = 'registry',
   Array                           $uninstall_options  = [],
-  String                          $user               = undef,
+  String                          $user               = 'root',
   Boolean                         $use_package_json   = false,
 ) {
   $install_options_string = join($install_options, ' ')
   $uninstall_options_string = join($uninstall_options, ' ')
   # Use the nvm command to set the node version
-  $nvm_command_prefix = '. ${nvm_dir}/nvm.sh && nvm use ${nodejs_version} && '
+  $nvm_command_prefix = ". ${nvm_dir}/nvm.sh && nvm use ${nodejs_version} && "
   # Note that install_check will always return false when a remote source is
   # provided
   if $source != 'registry' {
@@ -44,16 +44,21 @@ define nvm::npm (
     default   => '/'
   }
 
-  # Check if the mutex of $target and --global is correct
-  if $target == undef and ! include($install_options, '--global') {
+  # Check if the mutex of $target and --global is correct, and set correct paths and flags
+  if $target == undef and ! ('--global' in $install_options) {
     fail("The target parameter must be set when not using the --global option.")
-  } else if $target != undef and include($install_options, '--global') {
+  } elsif $target != undef and '--global' in $install_options {
     fail("The target parameter cannot be set when using the --global option.")
+  } elsif '--global' in $install_options {
+    $global_flag = "--global"
+    $install_location = "${nvm_dir}${dirsep}versions${dirsep}node${dirsep}v${nodejs_version}/lib"
+  } else {
+    $global_flag = undef
+    $install_location = $target
   }
 
-  $list_command = "${nvm_command_prefix} npm ls --long --parseable"
-  $install_check = "${list_command} | ${grep_command} \"${target}${dirsep}node_modules${dirsep}${install_check_package_string}\""
-
+   $list_command = "${nvm_command_prefix} npm ${global_flag} ls --long --parseable"
+  $install_check = "${list_command} | ${grep_command} ${install_check_package_string}"
   # set a sensible path on Unix
   $exec_path = $facts['os']['family'] ? {
     'Windows' => undef,
@@ -70,8 +75,8 @@ define nvm::npm (
         command => "${nvm_command_prefix} npm ${npm_command} * ${options}",
         path    => $exec_path,
         onlyif  => $list_command,
-        user    => $user,
-        cwd     => "${target}${dirsep}node_modules",
+        cwd     => "${install_location}${dirsep}node_modules",
+        provider => shell,
         require => Nvm::Node::Install[$nodejs_version],
       }
     } else {
@@ -79,8 +84,8 @@ define nvm::npm (
         command => "${nvm_command_prefix} npm ${npm_command} ${package_string} ${options}",
         path    => $exec_path,
         onlyif  => $install_check,
-        user    => $user,
-        cwd     => $target,
+        cwd     => $install_location,
+        provider => shell,
         require => Nvm::Node::Install[$nodejs_version],
       }
     }
@@ -97,7 +102,8 @@ define nvm::npm (
         path        => $exec_path,
         unless      => $list_command,
         user        => $user,
-        cwd         => $target,
+        cwd         => $install_location,
+        provider    => shell,
         require     => Nvm::Node::Install[$nodejs_version],
       }
     } else {
@@ -106,7 +112,8 @@ define nvm::npm (
         path        => $exec_path,
         unless      => $install_check,
         user        => $user,
-        cwd         => $target,
+        cwd         => $install_location,
+        provider    => shell,
         require     => Nvm::Node::Install[$nodejs_version],
       }
     }
