@@ -26,39 +26,17 @@
 #   A hash of Node.js versions to install with their configurations. If not specified, it defaults to the value in nvm::params.
 class nvm (
   String $user,
-
-  # The home directory of the user. Defaults to '/root' for root or '/home/<user>' for others.
-  Optional[String] $home = undef,
-
-  # The directory where NVM will be installed. Defaults to '/home/<user>/.nvm'.
-  Optional[String] $nvm_dir = undef,
-
-  # The path to the user's profile file. Defaults to '/home/<user>/.bashrc'.
-  Optional[String] $profile_path = undef,
-
-  # The version of NVM to install. Defaults to the value in nvm::params.
-  String $version = $nvm::params::version,
-
-  # Whether to manage the user resource. Defaults to the value in nvm::params.
-  Boolean $manage_user = $nvm::params::manage_user,
-
-  # Whether to manage dependencies like git, wget, and make. Defaults to the value in nvm::params.
-  Boolean $manage_dependencies = $nvm::params::manage_dependencies,
-
-  # Whether to manage the user's profile file. Defaults to the value in nvm::params.
-  Boolean $manage_profile = $nvm::params::manage_profile,
-
-  # The repository URL for NVM. Defaults to the value in nvm::params.
-  String $nvm_repo = $nvm::params::nvm_repo,
-
-  # Whether to refetch the NVM repository. Defaults to the value in nvm::params.
-  Boolean $refetch = $nvm::params::refetch,
-
-  # The version of Node.js to install. Defaults to the value in nvm::params.
-  Optional[String] $install_node = $nvm::params::install_node,
-
-  # A hash of Node.js versions to install with their configurations. Defaults to the value in nvm::params.
-  Hash $node_instances = $nvm::params::node_instances,
+  Optional[String]  $home                 = undef,
+  Optional[String]  $nvm_dir              = undef,
+  Optional[String]  $profile_path         = undef,
+  String            $version              = $nvm::params::version,
+  Boolean           $manage_user          = $nvm::params::manage_user,
+  Boolean           $manage_dependencies  = $nvm::params::manage_dependencies,
+  Boolean           $manage_profile       = $nvm::params::manage_profile,
+  String            $nvm_repo             = $nvm::params::nvm_repo,
+  Boolean           $refetch              = $nvm::params::refetch,
+  Optional[String]  $install_node         = $nvm::params::install_node,
+  Hash              $node_instances       = $nvm::params::node_instances,
 ) inherits nvm::params {
   # Switch home based on user
   if $home == undef {
