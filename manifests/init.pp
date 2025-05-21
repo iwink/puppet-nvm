@@ -60,42 +60,29 @@ class nvm (
   # A hash of Node.js versions to install with their configurations. Defaults to the value in nvm::params.
   Hash $node_instances = $nvm::params::node_instances,
 ) inherits nvm::params {
-  if $home == undef and $user == 'root' {
-    $final_home = '/root'
-  }
-  elsif $home == undef {
-    $final_home = "/home/${user}"
-  }
-  else {
+  # Switch home based on user
+  if $home == undef {
+    $final_home = $user ? {
+      'root' => '/root',
+      default => "/home/${user}",
+    }
+  } else {
     $final_home = $home
   }
 
   if $nvm_dir == undef {
-    $final_nvm_dir = "/home/${user}/.nvm"
+    $final_nvm_dir = "${final_home}/.nvm"
   }
   else {
     $final_nvm_dir = $nvm_dir
   }
 
   if $profile_path == undef {
-    $final_profile_path = "/home/${user}/.bashrc"
+    $final_profile_path = "${final_home}/.bashrc"
   }
   else {
     $final_profile_path = $profile_path
   }
-
-  validate_string($user)
-  validate_string($final_home)
-  validate_string($final_nvm_dir)
-  validate_string($final_profile_path)
-  validate_string($version)
-  validate_bool($manage_user)
-  validate_bool($manage_dependencies)
-  validate_bool($manage_profile)
-  if $install_node {
-    validate_string($install_node)
-  }
-  validate_hash($node_instances)
 
   Exec {
     path => '/bin:/sbin:/usr/bin:/usr/sbin',

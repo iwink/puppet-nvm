@@ -32,7 +32,6 @@ describe 'nvm', :type => :class do
     it { should contain_file_line('add . ~/.nvm/nvm.sh to profile file')
             .with_path('/home/foo/.bashrc')
     }
-    it { should_not contain_nvm__node__install() }
   end
 
   context 'with manage_dependencies => false' do

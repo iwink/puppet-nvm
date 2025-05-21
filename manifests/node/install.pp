@@ -33,20 +33,16 @@ define nvm::node::install (
   else {
     $is_default = $set_default
   }
-
+  # Switch nvm_dir based on user home
   if $nvm_dir == undef {
-    $final_nvm_dir = "/home/${user}/.nvm"
+    $final_nvm_dir = $user ? {
+      'root' => '/root/.nvm',
+      default => "/home/${user}/.nvm",
+    }
   }
   else {
     $final_nvm_dir = $nvm_dir
   }
-
-  validate_string($user)
-  validate_string($final_nvm_dir)
-  validate_string($version)
-  validate_bool($default)
-  validate_bool($set_default)
-  validate_bool($from_source)
 
   if $from_source {
     $nvm_install_options = ' -s '

@@ -29,18 +29,18 @@ describe 'nvm::node::install define' do
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && nvm --version" -s /bin/bash') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /0.29.0/ }
+      its('exit_status') { should eq 0 }
+      its('stdout') { should match(/0.29.0/) }
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && node --version" -s /bin/bash') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /4.3.1/ }
+      its('exit_status') { should eq 0 }
+      its('stdout') { should match /4.3.1/ }
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && nvm ls" -s /bin/bash') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /0.10.40/ }
+      its('exit_status') { should eq 0 }
+      its('stdout') { should match /0.10.40/ }
     end
 
   end

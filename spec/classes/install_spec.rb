@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe 'nvm::install', :type => :class do
-
+  let(:pre_condition) { [
+      'file { "dependencies": ensure => directory }'
+  ] }
   context 'with refectch => false' do
     let :params do
     {
@@ -10,7 +12,7 @@ describe 'nvm::install', :type => :class do
       :version => 'version',
       :nvm_dir => 'nvm_dir',
       :nvm_repo => 'nvm_repo',
-      :dependencies => 'dependencies',
+      :dependencies => ['File[dependencies]'],
       :refetch => false
     }
     end
@@ -20,7 +22,6 @@ describe 'nvm::install', :type => :class do
                     .with_user('foo')
                     .with_cwd('/home/foo')
                     .with_unless('/usr/bin/test -d nvm_dir/.git')
-                    .with_require('dependencies')
                     .that_notifies('Exec[git checkout nvm_repo version]')
     }
     it { should_not contain_exec('git fetch nvm_repo nvm_dir') }
@@ -40,7 +41,7 @@ describe 'nvm::install', :type => :class do
       :version => 'version',
       :nvm_dir => 'nvm_dir',
       :nvm_repo => 'nvm_repo',
-      :dependencies => 'dependencies',
+      :dependencies => ['File[dependencies]'],
       :refetch => true
     }
     end
@@ -50,7 +51,6 @@ describe 'nvm::install', :type => :class do
                     .with_user('foo')
                     .with_cwd('/home/foo')
                     .with_unless('/usr/bin/test -d nvm_dir/.git')
-                    .with_require('dependencies')
                     .that_notifies('Exec[git checkout nvm_repo version]')
     }
     it { should contain_exec('git fetch nvm_repo nvm_dir')

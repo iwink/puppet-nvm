@@ -3,12 +3,16 @@
   "version": "1.1.1",
   "author": "artberri",
   "summary": "Puppet Module to install Node.js with Node Version Manager (NVM)",
-  "description": "A puppet module to install (multiple versions of) Node.js with NVM (Node Version Manager).",
   "license": "Apache-2.0",
   "source": "https://github.com/artberri/puppet-nvm",
   "project_page": "https://github.com/artberri/puppet-nvm",
   "issues_url": "https://github.com/artberri/puppet-nvm/issues",
-  "tags": ["nvm", "nodejs", "node.js", "node", "npm"],
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=3.2.0 <5.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
@@ -57,12 +61,6 @@
       ]
     }
   ],
-  "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=3.2.0 <5.0.0"
-    }
-  ],
   "requirements": [
     {
       "name": "pe",
@@ -72,6 +70,16 @@
       "name": "puppet",
       "version_requirement": ">=2.7.20 <5.0.0"
     }
-  ]
+  ],
+  "description": "A puppet module to install (multiple versions of) Node.js with NVM (Node Version Manager).",
+  "tags": [
+    "nvm",
+    "nodejs",
+    "node.js",
+    "node",
+    "npm"
+  ],
+  "pdk-version": "3.4.0",
+  "template-url": "pdk-default#3.4.0",
+  "template-ref": "tags/3.4.0-0-gd3cc13f"
 }
-

@@ -19,7 +19,7 @@ class nvm::install (
   String $version,
   String $nvm_dir,
   String $nvm_repo,
-  Array[String] $dependencies,
+  Optional[Tuple] $dependencies = undef,
   Boolean $refetch = false,
   Optional[String] $home = undef,
 ) {
