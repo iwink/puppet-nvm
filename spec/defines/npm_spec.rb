@@ -18,7 +18,8 @@ describe 'nvm::npm', :type => :define do
     }
     end
 
-    it { should contain_exec('nvm_npm_install_less')
+    it {
+      is_expected.to contain_exec('nvm_18.20.4_npm_install_less')
       .with_command('. /nvm_dir/nvm.sh && nvm use v18.20.4 && npm install less ') # Extra space at the end due to the `options` parameter that is not used
       .with_user('foo')
       .with_cwd('/test')
