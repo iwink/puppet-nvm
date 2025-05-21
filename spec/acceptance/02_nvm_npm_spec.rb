@@ -1,7 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'nvm::npm define' do
-
   describe 'install local package' do
     pp = <<-EOS
         class { 'nvm':
@@ -28,18 +27,16 @@ describe 'nvm::npm define' do
     EOS
     let(:manifest) { pp }
 
-    it 'should work with no errors' do
-      apply_manifest(manifest, :catch_failures => true)
+    it 'works with no errors' do
+      apply_manifest(manifest, catch_failures: true)
     end
 
-    it 'should be idempotent' do
-      apply_manifest(manifest, :catch_changes => true)
+    it 'is idempotent' do
+      apply_manifest(manifest, catch_changes: true)
     end
-
-    describe file("/home/foo/.nvm/versions/node/v18.20.4/bin/lessc") do
-      it { is_expected.to exist}
+    describe file('/nodejs/node_modules/less/bin/lessc') do
+      it { is_expected.to exist }
     end
-
   end
 
   describe 'install global package' do
@@ -68,13 +65,16 @@ describe 'nvm::npm define' do
     EOS
     let(:manifest) { pp }
 
-    it 'should work with no errors' do
-      apply_manifest(manifest, :catch_failures => true)
+    it 'works with no errors' do
+      apply_manifest(manifest, catch_failures: true)
     end
 
-    it 'should be idempotent' do
-      apply_manifest(manifest, :catch_changes => true)
+    it 'is idempotent' do
+      apply_manifest(manifest, catch_changes: true)
+    end
+
+    describe file('/root/.nvm/versions/node/v18.20.4/bin/lessc') do
+      it { is_expected.to exist }
     end
   end
-
 end

@@ -1,7 +1,6 @@
 require 'spec_helper_acceptance'
 
 describe 'nvm::node::install define' do
-
   describe 'running puppet code' do
     pp = <<-EOS
         class { 'nvm':
@@ -16,24 +15,22 @@ describe 'nvm::node::install define' do
     EOS
     let(:manifest) { pp }
 
-    it 'should work with no errors' do
-      apply_manifest(manifest, :catch_failures => true)
+    it 'works with no errors' do
+      apply_manifest(manifest, catch_failures: true)
     end
 
-    it 'should not be idempotent and should throw a deprection warning' do
-      apply_manifest(manifest, :expect_changes => true)
+    it 'is not idempotent and should throw a deprection warning' do
+      apply_manifest(manifest, expect_changes: true)
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && nvm --version" -s /bin/bash') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /0.29.0/ }
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match(%r{0.29.0}) }
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && node --version" -s /bin/bash') do
-      its(:exit_status) { should eq 0 }
-      its(:stdout) { should match /5.6.0/ }
+      its(:exit_status) { is_expected.to eq 0 }
+      its(:stdout) { is_expected.to match(%r{5.6.0}) }
     end
-
   end
-
 end

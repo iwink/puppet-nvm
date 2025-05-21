@@ -2,6 +2,6 @@
   docker:
     provisioner: docker
     images: 
-      - litmusimage/debian:12
+      # - litmusimage/debian:12
       - litmusimage/debian:11
-      - litmusimage/debian:10
+      # - litmusimage/debian:10

@@ -124,23 +124,23 @@ define nvm::npm (
     $options = $install_options_string
     if $use_package_json {
       exec { "nvm_${nodejs_version}_npm_${npm_command}_${package}":
-        command  => "${nvm_command_prefix} npm ${npm_command} ${options}",
-        unless   => $list_command,
-        user     => $user,
-        cwd      => $install_location,
+        command     => "${nvm_command_prefix} npm ${npm_command} ${options}",
+        unless      => $list_command,
+        user        => $user,
+        cwd         => $install_location,
         environment => ["NVM_DIR=${final_nvm_dir}"],
-        provider => shell,
-        require  => Nvm::Node::Install[$nodejs_version],
+        provider    => shell,
+        require     => Nvm::Node::Install[$nodejs_version],
       }
     } else {
       exec { "nvm_${nodejs_version}_npm_${npm_command}_${package}":
-        command  => "${nvm_command_prefix} npm ${npm_command} ${package_string} ${options}",
-        unless   => $install_check,
-        user     => $user,
-        cwd      => $install_location,
+        command     => "${nvm_command_prefix} npm ${npm_command} ${package_string} ${options}",
+        unless      => $install_check,
+        user        => $user,
+        cwd         => $install_location,
         environment => ["NVM_DIR=${final_nvm_dir}"],
-        provider => shell,
-        require  => Nvm::Node::Install[$nodejs_version],
+        provider    => shell,
+        require     => Nvm::Node::Install[$nodejs_version],
       }
     }
   }
