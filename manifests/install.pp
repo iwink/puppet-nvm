@@ -1,14 +1,28 @@
 # See README.md for usage information
+# @summary Install nvm from git
+# @param user
+#   The user for whom NVM will be installed. This is a required parameter.
+# @param home
+#   The home directory of the user. If not specified, it defaults to '/root' for root or '/home/<user>'.
+# @param version
+#   The version of NVM to install. If not specified, it defaults to the value in nvm::params.
+# @param nvm_dir
+#   The directory where NVM will be installed. If not specified, it defaults to '/home/<user>/.nvm'.
+# @param nvm_repo
+#   The repository URL for NVM. If not specified, it defaults to the value in nvm::params.
+# @param dependencies
+#   The dependencies required for NVM installation. If not specified, it defaults to the value in nvm::params.
+# @param refetch
+#   Whether to refetch the NVM repository. If not specified, it defaults to the value in nvm::params.
 class nvm::install (
-  $user,
-  $home,
-  $version,
-  $nvm_dir,
-  $nvm_repo,
-  $dependencies,
-  $refetch,
+  String $user,
+  String $version,
+  String $nvm_dir,
+  String $nvm_repo,
+  Optional[Tuple] $dependencies = undef,
+  Boolean $refetch = false,
+  Optional[String] $home = undef,
 ) {
-
   exec { "git clone ${nvm_repo} ${nvm_dir}":
     command => "git clone ${nvm_repo} ${nvm_dir}",
     cwd     => $home,
@@ -34,5 +48,4 @@ class nvm::install (
     user        => $user,
     refreshonly => true,
   }
-
 }

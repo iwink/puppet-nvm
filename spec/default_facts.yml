@@ -1,0 +1,30 @@
+# Use default_module_facts.yml for module specific facts.
+#
+# Facts specified here will override the values provided by rspec-puppet-facts.
+---
+networking:
+  ip: "172.16.254.254"
+  ip6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
+  mac: "AA:AA:AA:AA:AA:AA"
+is_pe: false
+os:
+  architecture: "amd64"
+  family: "RedHat"
+  hardware: "x86_64"
+  name: "CentOS"
+  release:
+    full: "7.9.2009"
+    major: "7"
+  selinux:
+    enabled: false
+  system:
+    vendor: "VMware, Inc."
+    product: "VMware Virtual Platform"
+    version: "None"
+  kernel: "Linux"
+  distro:
+    codename: "Core"
+    description: "CentOS Linux release 7.9.2009 (Core)"
+    id: "CentOS Linux"
+    major: "7"
+    minor: "9"

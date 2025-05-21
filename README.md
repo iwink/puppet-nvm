@@ -406,15 +406,13 @@ For more information, please read the complete [module contribution guide](CONTR
 
 ### Running tests
 
-This project contains tests for both [rspec-puppet](http://rspec-puppet.com/) and [beaker-rspec](https://github.com/puppetlabs/beaker-rspec) to verify functionality. For detailed information on using these tools, please see their respective documentation.
-
-This project contains tests for [rspec-puppet](http://rspec-puppet.com/) to verify functionality. For detailed information on using these tools, please see their respective documentation.
+This project contains tests for both [rspec-puppet](http://rspec-puppet.com/) and [litmus](https://github.com/puppetlabs/puppet_litmus) to verify functionality. For detailed information on using these tools, please see their respective documentation.
 
 #### Testing quickstart
 
 ```sh
 gem install bundler
-bundle install
-bundle exec rake test
-./spec/run_virtualbox_tests.sh # this will take a long time
+pdk bundle install
+./spec/prepare_litmus_test.sh
+pdk bundle exec rake litmus:acceptance:parallel
 ```
