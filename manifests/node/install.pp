@@ -5,26 +5,31 @@
 # @param nvm_dir
 #   The directory where NVM is installed. If not specified, it defaults to '/home/<user>/.nvm'.
 # @param version
-#   The version of Node.js to install. This is a required parameter.
+#   The version of Node.js to install. This is a required parameter. Not prefixed with `v`
 # @param set_default
 #   Whether to set the installed version as the default. This is a boolean parameter. Defaults to false.
 # @param from_source
 #   Whether to install Node.js from source. This is a boolean parameter. Defaults to false.
 # @param default
 #   A deprecated parameter that is now replaced by set_default. This is a boolean parameter. Defaults to false.
+# @param version_alias
+#   An optional alias for the installed version. This is a string parameter. Defaults to undef.
 define nvm::node::install (
   String $user,
-  String           $version     = $title,
-  Boolean          $set_default = false,
-  Boolean          $from_source = false,
-  Boolean          $default     = false,
-  Optional[String] $nvm_dir     = undef,
+  Pattern[/^\d+.\d+.\d+/] $version       = $title,
+  Boolean                 $set_default   = false,
+  Boolean                 $from_source   = false,
+  Boolean                 $default       = false,
+  Optional[String]        $version_alias = undef,
+  Optional[String]        $nvm_dir       = undef,
 ) {
   # The base class must be included first because it is used by parameter defaults
   if ! defined(Class['nvm']) {
     fail('You must include the nvm base class before using any nvm defined resources')
   }
-
+  if $version_alias == 'default' {
+    fail('The alias parameter cannot be set to "default", use set_default instead')
+  }
   # Notify users that use the deprecated default parameter
   if $default {
     notify { 'The `default` parameter is now deprecated because `default` is a reserved word use `set_default` instead': }
@@ -51,25 +56,36 @@ define nvm::node::install (
     $nvm_install_options = ''
   }
 
-  exec { "nvm install node version ${version}":
+  exec { "nvm install node version v${version}":
     cwd         => $final_nvm_dir,
-    command     => ". ${final_nvm_dir}/nvm.sh && nvm install ${nvm_install_options} ${version}",
+    command     => ". ${final_nvm_dir}/nvm.sh && nvm install ${nvm_install_options} v${version}",
     user        => $user,
-    unless      => ". ${final_nvm_dir}/nvm.sh && nvm which ${version}",
+    unless      => ". ${final_nvm_dir}/nvm.sh && nvm which v${version}",
     environment => ["NVM_DIR=${final_nvm_dir}"],
     require     => Class['nvm::install'],
     provider    => shell,
   }
 
   if $is_default {
-    exec { "nvm set node version ${version} as default":
+    exec { "nvm set node version v${version} as default":
       cwd         => $final_nvm_dir,
-      command     => ". ${final_nvm_dir}/nvm.sh && nvm alias default ${version}",
+      command     => ". ${final_nvm_dir}/nvm.sh && nvm alias default v${version}",
       user        => $user,
       environment => ["NVM_DIR=${final_nvm_dir}"],
-      unless      => ". ${final_nvm_dir}/nvm.sh && nvm which default | grep ${version}",
+      unless      => ". ${final_nvm_dir}/nvm.sh && nvm which default | grep v${version}",
       provider    => shell,
-      require     => Exec["nvm install node version ${version}"],
+      require     => Exec["nvm install node version v${version}"],
+    }
+  }
+  if $version_alias {
+    exec { "nvm set node version v${version} alias as ${version_alias}":
+      cwd         => $final_nvm_dir,
+      command     => ". ${final_nvm_dir}/nvm.sh && nvm alias ${version_alias} v${version}",
+      user        => $user,
+      environment => ["NVM_DIR=${final_nvm_dir}"],
+      unless      => ". ${final_nvm_dir}/nvm.sh && nvm which ${version_alias} | grep v${version}",
+      provider    => shell,
+      require     => Exec["nvm install node version v${version}"],
     }
   }
 }

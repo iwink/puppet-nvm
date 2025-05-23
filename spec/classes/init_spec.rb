@@ -105,16 +105,16 @@ describe 'nvm', type: :class do
     it { is_expected.not_to contain_file_line('add NVM_DIR to profile file') }
   end
 
-  context 'with install_node => dummyversion' do
+  context 'with install_node => 1.1.1' do
     let :params do
       {
         user: 'foo',
-        install_node: 'dummyversion'
+        install_node: '1.1.1'
       }
     end
 
     it {
-      is_expected.to contain_nvm__node__install('dummyversion')
+      is_expected.to contain_nvm__node__install('1.1.1')
         .with_user('foo')
         .with_nvm_dir('/home/foo/.nvm')
         .with_set_default(true)
