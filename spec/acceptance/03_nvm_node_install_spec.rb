@@ -13,8 +13,9 @@ describe 'nvm::node::install define' do
             set_default => true,
         }
 
-        nvm::node::install { '0.10.40':
+        nvm::node::install { '18.20.4':
             user    => 'foo',
+            version_alias   => 'bar',
         }
     EOS
     let(:manifest) { pp }
@@ -39,7 +40,13 @@ describe 'nvm::node::install define' do
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && nvm ls" -s /bin/bash') do
       its('exit_status') { is_expected.to eq 0 }
-      its('stdout') { is_expected.to match(%r{0.10.40}) }
+      its('stdout') { is_expected.to match(%r{18.20.4}) }
+    end
+
+    describe file('/home/foo/.nvm/alias/bar') do
+      it { is_expected.to exist }
+      it { is_expected.to be_file }
+      it { is_expected.to contain '18.20.4' }
     end
   end
 end

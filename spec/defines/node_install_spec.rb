@@ -18,15 +18,15 @@ describe 'nvm::node::install', type: :define do
     end
 
     it {
-      is_expected.to contain_exec('nvm install node version 0.12.7')
+      is_expected.to contain_exec('nvm install node version v0.12.7')
         .with_cwd('/nvm_dir')
-        .with_command('. /nvm_dir/nvm.sh && nvm install  0.12.7')
+        .with_command('. /nvm_dir/nvm.sh && nvm install  v0.12.7')
         .with_user('foo')
-        .with_unless('. /nvm_dir/nvm.sh && nvm which 0.12.7')
+        .with_unless('. /nvm_dir/nvm.sh && nvm which v0.12.7')
         .that_requires('Class[nvm::install]')
         .with_provider('shell')
     }
-    it { is_expected.not_to contain_exec('nvm set node version 0.12.7 as default') }
+    it { is_expected.not_to contain_exec('nvm set node version v0.12.7 as default') }
   end
 
   context 'with set_default => true' do
@@ -39,20 +39,20 @@ describe 'nvm::node::install', type: :define do
     end
 
     it {
-      is_expected.to contain_exec('nvm install node version 0.12.7')
+      is_expected.to contain_exec('nvm install node version v0.12.7')
         .with_cwd('/nvm_dir')
-        .with_command('. /nvm_dir/nvm.sh && nvm install  0.12.7')
+        .with_command('. /nvm_dir/nvm.sh && nvm install  v0.12.7')
         .with_user('foo')
-        .with_unless('. /nvm_dir/nvm.sh && nvm which 0.12.7')
+        .with_unless('. /nvm_dir/nvm.sh && nvm which v0.12.7')
         .that_requires('Class[nvm::install]')
         .with_provider('shell')
     }
     it {
-      is_expected.to contain_exec('nvm set node version 0.12.7 as default')
+      is_expected.to contain_exec('nvm set node version v0.12.7 as default')
         .with_cwd('/nvm_dir')
-        .with_command('. /nvm_dir/nvm.sh && nvm alias default 0.12.7')
+        .with_command('. /nvm_dir/nvm.sh && nvm alias default v0.12.7')
         .with_user('foo')
-        .with_unless('. /nvm_dir/nvm.sh && nvm which default | grep 0.12.7')
+        .with_unless('. /nvm_dir/nvm.sh && nvm which default | grep v0.12.7')
         .with_provider('shell')
     }
   end
@@ -67,18 +67,37 @@ describe 'nvm::node::install', type: :define do
     end
 
     it {
-      is_expected.to contain_exec('nvm install node version 0.12.7')
+      is_expected.to contain_exec('nvm install node version v0.12.7')
         .with_cwd('/nvm_dir')
-        .with_command('. /nvm_dir/nvm.sh && nvm install  -s  0.12.7')
+        .with_command('. /nvm_dir/nvm.sh && nvm install  -s  v0.12.7')
         .with_user('foo')
-        .with_unless('. /nvm_dir/nvm.sh && nvm which 0.12.7')
+        .with_unless('. /nvm_dir/nvm.sh && nvm which v0.12.7')
         .that_requires('Class[nvm::install]')
         .with_provider('shell')
     }
-    it { is_expected.not_to contain_exec('nvm set node version 0.12.7 as default') }
+    it { is_expected.not_to contain_exec('nvm set node version v0.12.7 as default') }
   end
 
   context 'without required param user' do
     it { expect { catalogue }.to raise_error }
+  end
+
+  context 'with alias => bar' do
+    let :params do
+      {
+        user: 'foo',
+        nvm_dir: '/nvm_dir',
+        version_alias: 'bar',
+      }
+    end
+
+    it {
+      is_expected.to contain_exec('nvm set node version v0.12.7 alias as bar')
+        .with_cwd('/nvm_dir')
+        .with_command('. /nvm_dir/nvm.sh && nvm alias bar v0.12.7')
+        .with_user('foo')
+        .with_unless('. /nvm_dir/nvm.sh && nvm which bar | grep v0.12.7')
+        .with_provider('shell')
+    }
   end
 end

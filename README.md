@@ -43,6 +43,7 @@ A puppet module to install (multiple versions of) Node.js with NVM (Node Version
       - [`set_default` _\[Since version 1.1.0\]_](#set_default-since-version-110)
       - [`default` _\[Deprecated since version 1.1.0 use `set_default` instead\]_](#default-deprecated-since-version-110-use-set_default-instead)
       - [`from_source`](#from_source)
+      - [`version_alias`](#version_alias)
     - [Define: `nvm::npm`](#define-nvmnpm)
       - [`nvm_dir`](#nvm_dir-2)
       - [`nodejs_version`](#nodejs_version)
@@ -313,6 +314,12 @@ Default: `false`.
 Determines whether to install Node.js from sources.
 
 Default: `false`.
+
+#### `version_alias`
+
+Alias this version to specified name
+
+default: `undef`.
 
 ### Define: `nvm::npm`
 
