@@ -6,7 +6,7 @@ describe 'nvm class' do
       class { 'nvm':
         user           => 'root',
         nvm_dir        => '/opt/nvm',
-        version        => 'v0.29.0',
+        version        => 'v0.40.3',
         profile_path   => '/etc/profile.d/nvm.sh',
         install_node   => '0.12.7',
         node_instances => {
@@ -27,7 +27,7 @@ describe 'nvm class' do
 
     describe command('. /etc/profile.d/nvm.sh && nvm --version') do
       its(:exit_status) { is_expected.to eq 0 }
-      its(:stdout) { is_expected.to match(%r{0.29.0}) }
+      its(:stdout) { is_expected.to match(%r{0.40.3}) }
     end
 
     describe command('. /etc/profile.d/nvm.sh && node --version') do

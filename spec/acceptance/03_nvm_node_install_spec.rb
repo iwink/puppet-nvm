@@ -30,7 +30,7 @@ describe 'nvm::node::install define' do
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && nvm --version" -s /bin/bash') do
       its('exit_status') { is_expected.to eq 0 }
-      its('stdout') { is_expected.to match(%r{0.29.0}) }
+      its('stdout') { is_expected.to match(%r{0.40.3}) }
     end
 
     describe command('su - foo -c ". /home/foo/.nvm/nvm.sh && node --version" -s /bin/bash') do
