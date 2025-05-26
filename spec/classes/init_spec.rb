@@ -12,9 +12,9 @@ describe 'nvm', type: :class do
     it {
       is_expected.to contain_class('nvm::install')
         .with_user('foo')
-        .with_version('v0.29.0')
+        .with_version('v0.40.3')
         .with_nvm_dir('/home/foo/.nvm')
-        .with_nvm_repo('https://github.com/creationix/nvm.git')
+        .with_nvm_repo('https://github.com/nvm-sh/nvm.git')
         .with_dependencies('[Package[git]{:name=>"git"}, Package[wget]{:name=>"wget"}, Package[make]{:name=>"make"}]')
         .with_refetch(false)
     }
@@ -48,9 +48,9 @@ describe 'nvm', type: :class do
     it {
       is_expected.to contain_class('nvm::install')
         .with_user('foo')
-        .with_version('v0.29.0')
+        .with_version('v0.40.3')
         .with_nvm_dir('/home/foo/.nvm')
-        .with_nvm_repo('https://github.com/creationix/nvm.git')
+        .with_nvm_repo('https://github.com/nvm-sh/nvm.git')
         .with_dependencies(nil)
         .with_refetch(false)
     }
