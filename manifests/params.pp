@@ -1,4 +1,4 @@
-# See README.md for usage information
+# @summary Default parameter values for the nvm module.
 class nvm::params {
   $manage_user         = false
   $manage_dependencies = true
