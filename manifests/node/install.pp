@@ -16,7 +16,7 @@
 #   An optional alias for the installed version. This is a string parameter. Defaults to undef.
 define nvm::node::install (
   String $user,
-  Pattern[/^\d+.\d+.\d+/] $version       = $title,
+  Pattern[/^\d+\.\d+\.\d+/] $version       = $title,
   Boolean                 $set_default   = false,
   Boolean                 $from_source   = false,
   Boolean                 $default       = false,

@@ -24,8 +24,8 @@
 # @param cmd_exe_path
 #   The path to the command executable. This is a required parameter.
 define nvm::npm (
-  Pattern[/^\d+.\d+.\d+/]         $nodejs_version,
-  Pattern[/^[^<            >= ]/] $ensure             = 'present',
+  Pattern[/^\d+\.\d+\.\d+/]       $nodejs_version,
+  Pattern[/^[^<>=\s]+$/]          $ensure             = 'present',
   Array                           $install_options    = [],
   String                          $package            = $title,
   String                          $source             = 'registry',
